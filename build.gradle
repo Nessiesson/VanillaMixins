@@ -30,9 +30,21 @@ minecraft {
 	makeObfSourceJar = false
 }
 
-reobf.jar {
-	mappingType = "NOTCH"
+reobf {
+	jar {
+		mappingType = "NOTCH"
+	}
+	shadowJar {
+		mappingType = "NOTCH"
+	}
 }
+
+mixin {
+	defaultObfuscationEnv notch
+}
+
+sourceSets.main.ext.refMap = "mixins.vanillamixins.refmap.json"
+
 
 repositories {
 	maven { url = "https://repo.spongepowered.org/maven" }
@@ -56,18 +68,6 @@ dependencies {
 	compile 'commons-io:commons-io:2.5'
 	compile 'com.google.code.gson:gson:2.8.0'
 }
-
-mixin {
-	defaultObfuscationEnv notch
-}
-
-sourceSets.main.ext.refMap = "mixins.vanillamixins.refmap.json"
-
-
-// Can't get the flipping file to be in the final jar in any other way. |_|
-/*processResources {
-	from 'build/tmp/compileJava/mixins.vanillamixins.refmap.json'
-}*/
 
 shadowJar {
 	exclude "dummyThing"
