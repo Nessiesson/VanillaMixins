@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixins;
 import java.io.File;
 import java.util.List;
 
-public class vanillamixinsTweaker implements ITweaker {
+public class VanillaMixinsTweaker implements ITweaker {
 	@Override
 	public void injectIntoClassLoader(LaunchClassLoader loader) {
 		MixinBootstrap.init();

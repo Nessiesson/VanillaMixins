@@ -24,15 +24,14 @@ minecraft {
 	version = "1.12"
 	mappings = "stable_39"
 	runDir = "run"
-	tweakClass = "nessiesson.vanillamixins.launch.vanillamixinsTweaker"
-	serverJvmArgs.addAll("-Dmixin.hotSwap=true")
+	tweakClass = "nessiesson.vanillamixins.launch.VanillaMixinsTweaker"
+	serverJvmArgs.addAll("-Dmixin.debug=true")
 
 	makeObfSourceJar = false
 }
 
 reobf.jar {
 	mappingType = "NOTCH"
-	classpath = sourceSets.main.compileClasspath
 }
 
 repositories {
@@ -60,13 +59,15 @@ dependencies {
 
 mixin {
 	defaultObfuscationEnv notch
-	add sourceSets.main, "mixins.vanillamixins.refmap.json"
 }
 
+sourceSets.main.ext.refMap = "mixins.vanillamixins.refmap.json"
+
+
 // Can't get the flipping file to be in the final jar in any other way. |_|
-processResources {
+/*processResources {
 	from 'build/tmp/compileJava/mixins.vanillamixins.refmap.json'
-}
+}*/
 
 shadowJar {
 	exclude "dummyThing"
@@ -89,6 +90,6 @@ shadowJar {
 tasks.build.dependsOn(shadowJar)
 
 jar.manifest.attributes(
-		"Main-Class": "nessiesson.vanillamixins.launch.vanillamixins",
-		"Class-Path": "minecraft_server.1.12.2.jar libraries/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar"
+		"Main-Class": "nessiesson.vanillamixins.launch.VanillaMixins",
+		"Class-Path": "minecraft_server.1.12.jar libraries/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar"
 )

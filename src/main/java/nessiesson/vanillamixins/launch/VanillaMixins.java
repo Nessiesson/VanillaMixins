@@ -40,7 +40,7 @@ public class VanillaMixins {
 	private static final String LAUNCHWRAPPER_SHA1 = "111e7bea9c968cdb3d06ef4632bf7ff0824d0f36";
 
 	private static final String TWEAK_ARGUMENT = "--tweakClass";
-	private static final String TWEAKER = "nessiesson.vanillamixins.launch.vanillamixinsTweaker";
+	private static final String TWEAKER = "nessiesson.vanillamixins.launch.VanillaMixinsTweaker";
 
 	public static void main(String[] args) throws Exception {
 		// Download/verify Minecraft server installation if necessary and not disabled
