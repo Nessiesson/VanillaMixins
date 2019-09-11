@@ -1,0 +1,10 @@
+{
+	"package": "nessiesson.vanillamixins.mixins",
+	"refmap": "mixins.vanillamixins.refmap.json",
+	"minVersion": "0.7.3",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"MixinCommandHandler",
+		"MixinMinecraftServer"
+	]
+}

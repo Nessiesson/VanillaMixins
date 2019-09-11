@@ -1,0 +1,94 @@
+buildscript {
+	repositories {
+		maven { url = "https://files.minecraftforge.net/maven" }
+		maven { url = "https://repo.spongepowered.org/maven" }
+		maven { url = "https://plugins.gradle.org/m2" }
+	}
+
+	dependencies {
+		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+		classpath "org.spongepowered:mixingradle:0.6-SNAPSHOT"
+		classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
+	}
+}
+
+apply plugin: "net.minecraftforge.gradle.tweaker-server"
+apply plugin: "org.spongepowered.mixin"
+apply plugin: "com.github.johnrengelman.shadow"
+
+version = "1.0.0"
+group = "nessiesson.vanillamixins" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "vanillamixins"
+
+minecraft {
+	version = "1.12"
+	mappings = "stable_39"
+	runDir = "run"
+	tweakClass = "nessiesson.vanillamixins.launch.vanillamixinsTweaker"
+	serverJvmArgs.addAll("-Dmixin.hotSwap=true")
+
+	makeObfSourceJar = false
+}
+
+reobf.jar {
+	mappingType = "NOTCH"
+	classpath = sourceSets.main.compileClasspath
+}
+
+repositories {
+	maven { url = "https://repo.spongepowered.org/maven" }
+}
+
+dependencies {
+	compile("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+		exclude module: "asm-commons"
+		exclude module: "asm-tree"
+		exclude module: "launchwrapper"
+		exclude module: "guava"
+		exclude module: "gson"
+		exclude module: "commons-io"
+	}
+	compile 'net.sf.jopt-simple:jopt-simple:5.0.4'
+	compile "com.eclipsesource.minimal-json:minimal-json:0.9.5"
+	compile "org.apache.logging.log4j:log4j-api:2.12.1"
+	compile "org.apache.logging.log4j:log4j-core:2.12.1"
+	compile 'com.google.guava:guava:21.0'
+	compile 'org.apache.commons:commons-lang3:3.5'
+	compile 'commons-io:commons-io:2.5'
+	compile 'com.google.code.gson:gson:2.8.0'
+}
+
+mixin {
+	defaultObfuscationEnv notch
+	add sourceSets.main, "mixins.vanillamixins.refmap.json"
+}
+
+// Can't get the flipping file to be in the final jar in any other way. |_|
+processResources {
+	from 'build/tmp/compileJava/mixins.vanillamixins.refmap.json'
+}
+
+shadowJar {
+	exclude "dummyThing"
+	exclude "LICENSE.txt"
+
+	dependencies {
+		include dependency("org.spongepowered:mixin")
+		include dependency('net.sf.jopt-simple:jopt-simple')
+		include dependency("com.eclipsesource.minimal-json:minimal-json")
+		include dependency("org.apache.logging.log4j:log4j-api")
+		include dependency("org.apache.logging.log4j:log4j-core")
+		include dependency('com.google.guava:guava')
+		include dependency('org.apache.commons:commons-lang3')
+		include dependency('commons-io:commons-io')
+		include dependency('com.google.code.gson:gson')
+	}
+
+	classifier = ""
+}
+tasks.build.dependsOn(shadowJar)
+
+jar.manifest.attributes(
+		"Main-Class": "nessiesson.vanillamixins.launch.vanillamixins",
+		"Class-Path": "minecraft_server.1.12.2.jar libraries/net/minecraft/launchwrapper/1.12/launchwrapper-1.12.jar"
+)
