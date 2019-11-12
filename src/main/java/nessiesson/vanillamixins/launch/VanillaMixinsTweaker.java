@@ -13,7 +13,6 @@ public class VanillaMixinsTweaker implements ITweaker {
 	@Override
 	public void injectIntoClassLoader(LaunchClassLoader loader) {
 		MixinBootstrap.init();
-		MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.SERVER);
 		Mixins.addConfiguration("mixins.vanillamixins.json");
 	}
 
